@@ -17,7 +17,11 @@ cmake_dependent_option(BUILD_SHARED_LIBS "Build libebml as a shared library (exc
 option(BUILD_TESTING "Build tests" OFF)
 option(DEV_MODE "Developer mode with extra compilation checks" OFF)
 
-hunter_add_package(EBML)
+option(HUNTER_ADD_EBML "Add EBML dependency - disable when building from hunter project" ON)
+
+if(HUNTER_ADD_EBML)
+    hunter_add_package(EBML)
+endif()
 find_package(EBML 2.0.0 REQUIRED)
 
 include(GNUInstallDirs)
