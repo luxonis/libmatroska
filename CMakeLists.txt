@@ -1,10 +1,18 @@
-cmake_minimum_required(VERSION 3.1.2)
+cmake_minimum_required(VERSION 3.4)
+
+include("cmake/HunterGate.cmake")
+HunterGate(
+    URL "https://github.com/cpp-pm/hunter/archive/v0.23.322.tar.gz"
+    SHA1 "cb0ea1f74f4a2c49a807de34885743495fccccbe"
+    LOCAL # Local config for dependencies
+)
 
 project(matroska VERSION 1.7.1)
 
 option(DISABLE_PKGCONFIG "Disable PkgConfig module generation" OFF)
 option(DISABLE_CMAKE_CONFIG "Disable CMake package config module generation" OFF)
 
+hunter_add_package(EBML)
 find_package(EBML 1.4.3 REQUIRED)
 
 include(GNUInstallDirs)
