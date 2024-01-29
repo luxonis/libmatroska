@@ -13,7 +13,7 @@ option(DISABLE_PKGCONFIG "Disable PkgConfig module generation" OFF)
 option(DISABLE_CMAKE_CONFIG "Disable CMake package config module generation" OFF)
 
 hunter_add_package(EBML)
-find_package(EBML 1.4.3 CONFIG REQUIRED)
+find_package(EBML 1.4.3 REQUIRED)
 
 include(GNUInstallDirs)
 
