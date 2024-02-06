@@ -1,8 +1,8 @@
 hunter_config(
     EBML
-    VERSION "1.4.5"
-    URL "https://github.com/Matroska-Org/libebml/archive/refs/tags/release-1.4.5.tar.gz"
-    SHA1 "9d1e823d7be5d0a0699c4cca0354082e277b7d91"
+    VERSION "2.0.0"
+    URL "https://github.com/Matroska-Org/libebml/archive/abe8ef77838bdcea9c6a9509b81cf3f51e759ed0.tar.gz"
+    SHA1 "32b13e1b0f8e2596acea9b5df313567c4ec769cd"
     CMAKE_ARGS
         # Build shared libs by default to not cause licensing issues
         BUILD_SHARED_LIBS=ON
