@@ -12,12 +12,13 @@ project(matroska VERSION 1.7.1)
 option(DISABLE_PKGCONFIG "Disable PkgConfig module generation" OFF)
 option(DISABLE_CMAKE_CONFIG "Disable CMake package config module generation" OFF)
 
+option(BUILD_TESTS "Build tests" OFF)
 option(HUNTER_ADD_EBML "Add EBML dependency - disable when building from hunter project" ON)
 
 if(HUNTER_ADD_EBML)
     hunter_add_package(EBML)
 endif()
-find_package(EBML 1.4.3 REQUIRED)
+find_package(EBML 1.4.3 CONFIG REQUIRED)
 
 include(GNUInstallDirs)
 
@@ -142,4 +143,8 @@ if(NOT DISABLE_CMAKE_CONFIG)
     ${CMAKE_CURRENT_BINARY_DIR}/MatroskaConfig.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/MatroskaConfigVersion.cmake
     DESTINATION ${CMAKE_INSTALL_PACKAGEDIR})
+endif()
+
+if(BUILD_TESTS)
+  add_subdirectory(test)
 endif()
