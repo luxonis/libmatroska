@@ -1,5 +1,13 @@
-find_package(Matroska 1.7.1 REQUIRED)
-
+add_executable(test0 ebml/test0.cpp)
+add_executable(test00 ebml/test00.cpp)
 add_executable(test6 mux/test6.cpp)
+add_executable(test8 mux/test8.cpp)
+add_executable(test9 tags/test9.cpp)
+add_executable(test5 utf8/test5.cpp)
 
-target_link_libraries(test6 Matroska::matroska)
+target_link_libraries(test0 matroska EBML::ebml)
+target_link_libraries(test00 matroska EBML::ebml)
+target_link_libraries(test6 matroska EBML::ebml)
+target_link_libraries(test8 matroska EBML::ebml)
+target_link_libraries(test9 matroska EBML::ebml)
+target_link_libraries(test5 matroska EBML::ebml)
