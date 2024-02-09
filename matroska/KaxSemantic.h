@@ -34,14 +34,14 @@
 #define LIBMATROSKA_SEMANTIC_H
 
 #include "matroska/KaxTypes.h"
-#include "ebml/EbmlUInteger.h"
-#include "ebml/EbmlSInteger.h"
-#include "ebml/EbmlDate.h"
-#include "ebml/EbmlFloat.h"
-#include "ebml/EbmlString.h"
-#include "ebml/EbmlUnicodeString.h"
-#include "ebml/EbmlBinary.h"
-#include "ebml/EbmlMaster.h"
+#include <ebml/EbmlUInteger.h>
+#include <ebml/EbmlSInteger.h>
+#include <ebml/EbmlDate.h>
+#include <ebml/EbmlFloat.h>
+#include <ebml/EbmlString.h>
+#include <ebml/EbmlUnicodeString.h>
+#include <ebml/EbmlBinary.h>
+#include <ebml/EbmlMaster.h>
 #include "matroska/KaxDefines.h"
 
 using namespace libebml;
@@ -49,7 +49,7 @@ using namespace libebml;
 namespace libmatroska {
 DECLARE_MKX_BINARY (KaxSeekID)
 public:
-  bool ValidateSize() const override {return IsFiniteSize() && GetSize() <= 4;}
+  bool ValidateSize() const override {return IsFiniteSize() && GetSize() == 4;}
 };
 
 DECLARE_MKX_UINTEGER(KaxSeekPosition)
@@ -254,9 +254,13 @@ DECLARE_MKX_UINTEGER(KaxTrackFlagLacing)
 };
 
 DECLARE_MKX_UINTEGER(KaxTrackMinCache)
+public:
+  filepos_t RenderData(IOCallback & output, bool bForceRender, bool bSaveDefault) override;
 };
 
 DECLARE_MKX_UINTEGER(KaxTrackMaxCache)
+public:
+  filepos_t RenderData(IOCallback & output, bool bForceRender, bool bSaveDefault) override;
 };
 
 DECLARE_MKX_UINTEGER(KaxTrackDefaultDuration)
@@ -896,9 +900,9 @@ typedef enum {
  */
 typedef enum {
   MATROSKA_TRACK_ENCODING_COMP_NONE             = -1,
-  MATROSKA_TRACK_ENCODING_COMP_ZLIB             = 0, // zlib compression [@!RFC1950].
-  MATROSKA_TRACK_ENCODING_COMP_BZLIB            = 1, // bzip2 compression [@!BZIP2], **SHOULD NOT** be used; see usage notes.
-  MATROSKA_TRACK_ENCODING_COMP_LZO1X            = 2, // Lempel-Ziv-Oberhumer compression [@!LZO], **SHOULD NOT** be used; see usage notes.
+  MATROSKA_TRACK_ENCODING_COMP_ZLIB             = 0, // zlib compression (RFC1950).
+  MATROSKA_TRACK_ENCODING_COMP_BZLIB            = 1, // bzip2 compression (BZIP2), **SHOULD NOT** be used.
+  MATROSKA_TRACK_ENCODING_COMP_LZO1X            = 2, // Lempel-Ziv-Oberhumer compression (LZO), **SHOULD NOT** be used.
   MATROSKA_TRACK_ENCODING_COMP_HEADERSTRIP      = 3, // Octets in `ContentCompSettings` ((#contentcompsettings-element)) have been stripped from each frame.
 } MatroskaTrackEncodingCompAlgo;
 
@@ -919,7 +923,7 @@ typedef enum {
 } MatroskaTrackTranslateCodec;
 
 /**
- *Specify whether the video frames in this track are interlaced or not.
+ *Specify whether the video frames in this track are interlaced.
  */
 typedef enum {
   MATROSKA_VIDEO_FLAGINTERLACED_UNDETERMINED     = 0, // Unknown status.
@@ -1113,10 +1117,10 @@ typedef enum {
   MATROSKA_EMPHASIS_NO_EMPHASIS      = 0,
   MATROSKA_EMPHASIS_CD_AUDIO         = 1, // First order filter with zero point at 50 microseconds and a pole at 15 microseconds. Also found on DVD Audio and MPEG audio.
   MATROSKA_EMPHASIS_RESERVED         = 2,
-  MATROSKA_EMPHASIS_CCIT_J_17        = 3, // Defined in [@!ITU-J.17].
+  MATROSKA_EMPHASIS_CCIT_J_17        = 3, // Defined in (ITU-J.17).
   MATROSKA_EMPHASIS_FM_50            = 4, // FM Radio in Europe. RC Filter with a time constant of 50 microseconds.
   MATROSKA_EMPHASIS_FM_75            = 5, // FM Radio in the USA. RC Filter with a time constant of 75 microseconds.
-  MATROSKA_EMPHASIS_PHONO_RIAA       = 10, // Phono filter with time constants of t1=3180, t2=318 and t3=75 microseconds. [@!NAB1964]
+  MATROSKA_EMPHASIS_PHONO_RIAA       = 10, // Phono filter with time constants of t1=3180, t2=318 and t3=75 microseconds. (NAB1964)
   MATROSKA_EMPHASIS_PHONO_IEC_N78    = 11, // Phono filter with time constants of t1=3180, t2=450 and t3=50 microseconds.
   MATROSKA_EMPHASIS_PHONO_TELDEC     = 12, // Phono filter with time constants of t1=3180, t2=318 and t3=50 microseconds.
   MATROSKA_EMPHASIS_PHONO_EMI        = 13, // Phono filter with time constants of t1=2500, t2=500 and t3=70 microseconds.
@@ -1157,19 +1161,19 @@ typedef enum {
  */
 typedef enum {
   MATROSKA_CONTENTENCALGO_NOT_ENCRYPTED    = 0, // The data are not encrypted.
-  MATROSKA_CONTENTENCALGO_DES              = 1, // Data Encryption Standard (DES) [@!FIPS.46-3].
-  MATROSKA_CONTENTENCALGO_3DES             = 2, // Triple Data Encryption Algorithm [@!SP.800-67].
-  MATROSKA_CONTENTENCALGO_TWOFISH          = 3, // Twofish Encryption Algorithm [@!Twofish].
-  MATROSKA_CONTENTENCALGO_BLOWFISH         = 4, // Blowfish Encryption Algorithm [@!Blowfish].
-  MATROSKA_CONTENTENCALGO_AES              = 5, // Advanced Encryption Standard (AES) [@!FIPS.197].
+  MATROSKA_CONTENTENCALGO_DES              = 1, // Data Encryption Standard (DES) (FIPS.46-3).
+  MATROSKA_CONTENTENCALGO_3DES             = 2, // Triple Data Encryption Algorithm (SP.800-67).
+  MATROSKA_CONTENTENCALGO_TWOFISH          = 3, // Twofish Encryption Algorithm (Twofish).
+  MATROSKA_CONTENTENCALGO_BLOWFISH         = 4, // Blowfish Encryption Algorithm (Blowfish).
+  MATROSKA_CONTENTENCALGO_AES              = 5, // Advanced Encryption Standard (AES) (FIPS.197).
 } MatroskaContentEncodingAlgo;
 
 /**
  *The AES cipher mode used in the encryption.
  */
 typedef enum {
-  MATROSKA_AESSETTINGSCIPHERMODE_AES_CTR          = 1, // Counter [@!SP.800-38A].
-  MATROSKA_AESSETTINGSCIPHERMODE_AES_CBC          = 2, // Cipher Block Chaining [@!SP.800-38A].
+  MATROSKA_AESSETTINGSCIPHERMODE_AES_CTR          = 1, // Counter (SP.800-38A).
+  MATROSKA_AESSETTINGSCIPHERMODE_AES_CBC          = 2, // Cipher Block Chaining (SP.800-38A).
 } MatroskaAESSettingsCipherMode;
 
 /**
