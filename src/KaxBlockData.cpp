@@ -38,6 +38,8 @@
 #include "matroska/KaxDefines.h"
 #include "matroska/KaxSemantic.h"
 
+#include <iostream>
+
 using namespace libebml;
 
 namespace libmatroska {
@@ -67,7 +69,7 @@ KaxReferenceBlock::~KaxReferenceBlock()
 void KaxReferenceBlock::FreeBlob()
 {
   if (bOurBlob && RefdBlock!=nullptr)
-    // delete RefdBlock;
+    delete RefdBlock;
   RefdBlock = nullptr;
 }
 
@@ -85,6 +87,7 @@ filepos_t KaxReferenceBlock::UpdateSize(bool bSaveDefault, bool bForceRender)
 
 void KaxReferenceBlock::SetReferencedBlock(const KaxBlockBlob * aRefdBlock)
 {
+  std::cout << "Use created blob\n";
   assert(RefdBlock == nullptr);
   assert(aRefdBlock != nullptr);
   FreeBlob();
@@ -95,6 +98,7 @@ void KaxReferenceBlock::SetReferencedBlock(const KaxBlockBlob * aRefdBlock)
 
 void KaxReferenceBlock::SetReferencedBlock(const KaxBlockGroup & aRefdBlock)
 {
+  std::cout << "Create blob\n";
   FreeBlob();
   auto block_blob = new KaxBlockBlob(BLOCK_BLOB_NO_SIMPLE);
   block_blob->SetBlockGroup(*const_cast<KaxBlockGroup*>(&aRefdBlock));
