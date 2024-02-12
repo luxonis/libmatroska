@@ -67,7 +67,7 @@ KaxReferenceBlock::~KaxReferenceBlock()
 void KaxReferenceBlock::FreeBlob()
 {
   if (bOurBlob && RefdBlock!=nullptr)
-    delete RefdBlock;
+    // delete RefdBlock;
   RefdBlock = nullptr;
 }
 
