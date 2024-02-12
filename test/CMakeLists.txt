@@ -11,3 +11,12 @@ target_link_libraries(test6 matroska EBML::ebml)
 target_link_libraries(test8 matroska EBML::ebml)
 target_link_libraries(test9 matroska EBML::ebml)
 target_link_libraries(test5 matroska EBML::ebml)
+
+message(STATUS "CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
+
+target_include_directories(test0 PRIVATE ${CMAKE_BINARY_DIR})
+target_include_directories(test00 PRIVATE ${CMAKE_BINARY_DIR})
+target_include_directories(test6 PRIVATE ${CMAKE_BINARY_DIR})
+target_include_directories(test8 PRIVATE ${CMAKE_BINARY_DIR})
+target_include_directories(test9 PRIVATE ${CMAKE_BINARY_DIR})
+target_include_directories(test5 PRIVATE ${CMAKE_BINARY_DIR})
