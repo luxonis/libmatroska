@@ -18,7 +18,7 @@ option(HUNTER_ADD_EBML "Add EBML dependency - disable when building from hunter 
 if(HUNTER_ADD_EBML)
     hunter_add_package(EBML)
 endif()
-find_package(EBML 1.4.3 CONFIG REQUIRED)
+find_package(EBML 1.4.5 CONFIG REQUIRED)
 
 include(GNUInstallDirs)
 
