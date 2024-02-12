@@ -89,7 +89,7 @@ void KaxReferenceBlock::SetReferencedBlock(const KaxBlockBlob * aRefdBlock)
   assert(aRefdBlock != nullptr);
   FreeBlob();
   RefdBlock = aRefdBlock;
-  bOurBlob = true;
+  bOurBlob = false;
   SetValueIsSet();
 }
 
