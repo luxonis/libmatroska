@@ -68,8 +68,12 @@ KaxReferenceBlock::~KaxReferenceBlock()
 
 void KaxReferenceBlock::FreeBlob()
 {
-  if (bOurBlob && RefdBlock!=nullptr)
+  if (bOurBlob && RefdBlock!=nullptr) {
+    std::cout << "Delete blob " << (size_t)RefdBlock << std::endl;
     delete RefdBlock;
+  } else {
+    std::cout << "Do not delete\n";
+  }
   RefdBlock = nullptr;
 }
 
@@ -98,9 +102,9 @@ void KaxReferenceBlock::SetReferencedBlock(const KaxBlockBlob * aRefdBlock)
 
 void KaxReferenceBlock::SetReferencedBlock(const KaxBlockGroup & aRefdBlock)
 {
-  std::cout << "Create blob\n";
   FreeBlob();
   auto block_blob = new KaxBlockBlob(BLOCK_BLOB_NO_SIMPLE);
+  std::cout << "Create blob " << (size_t)block_blob << std::endl; 
   block_blob->SetBlockGroup(*const_cast<KaxBlockGroup*>(&aRefdBlock));
   RefdBlock = block_blob;
   bOurBlob = true;
