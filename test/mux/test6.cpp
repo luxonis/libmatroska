@@ -150,10 +150,10 @@ int main(int argc, char **argv)
     KaxContentEncryption &cencryption = GetChild<KaxContentEncryption>(cencoding);
     *(static_cast<EbmlUInteger *>(&GetChild<KaxContentEncAlgo>(cencryption))) = 14;
     GetChild<KaxContentEncKeyID>(cencryption).CopyBuffer((const binary *)"hello2", 6);
-    *(static_cast<EbmlUInteger *>(&GetChild<KaxContentSigAlgo>(cencryption))) = 15;
-    *(static_cast<EbmlUInteger *>(&GetChild<KaxContentSigHashAlgo>(cencryption))) = 16;
-    GetChild<KaxContentSigKeyID>(cencryption).CopyBuffer((const binary *)"hello3", 6);
-    GetChild<KaxContentSignature>(cencryption).CopyBuffer((const binary *)"hello4", 6);
+    // *(static_cast<EbmlUInteger *>(&GetChild<KaxContentSigAlgo>(cencryption))) = 15;
+    // *(static_cast<EbmlUInteger *>(&GetChild<KaxContentSigHashAlgo>(cencryption))) = 16;
+    // GetChild<KaxContentSigKeyID>(cencryption).CopyBuffer((const binary *)"hello3", 6);
+    // GetChild<KaxContentSignature>(cencryption).CopyBuffer((const binary *)"hello4", 6);
 
     // audio specific params
     KaxTrackAudio & MyTrack1Audio = GetChild<KaxTrackAudio>(MyTrack1);
@@ -162,14 +162,14 @@ int main(int argc, char **argv)
     *(static_cast<EbmlFloat *>(&MyTrack1Freq)) = 44100.0;
     MyTrack1Freq.ValidateSize();
 
-    KaxAudioPosition & MyTrack1Pos = GetChild<KaxAudioPosition>(MyTrack1Audio);
-    binary *_Pos = new binary[5];
-    _Pos[0] = '0';
-    _Pos[1] = '1';
-    _Pos[2] = '2';
-    _Pos[3] = '3';
-    _Pos[4] = '\0';
-    MyTrack1Pos.SetBuffer(_Pos, 5);
+    // KaxAudioPosition & MyTrack1Pos = GetChild<KaxAudioPosition>(MyTrack1Audio);
+    // binary *_Pos = new binary[5];
+    // _Pos[0] = '0';
+    // _Pos[1] = '1';
+    // _Pos[2] = '2';
+    // _Pos[3] = '3';
+    // _Pos[4] = '\0';
+    // MyTrack1Pos.SetBuffer(_Pos, 5);
 
     KaxAudioChannels & MyTrack1Channels = GetChild<KaxAudioChannels>(MyTrack1Audio);
     *(static_cast<EbmlUInteger *>(&MyTrack1Channels)) = 2;
@@ -252,7 +252,7 @@ int main(int argc, char **argv)
         KaxBlockBlob *Blob2 = new KaxBlockBlob(BLOCK_BLOB_NO_SIMPLE);
         Blob2->SetBlockGroup(*MyNewBlock);
     AllCues.AddBlockBlob(*Blob2);
-
+#if 0 // bogus ownership
     // frame with a past reference
     DataBuffer *data4 = new DataBuffer((binary *)"tttyyy", countof("tttyyy"));
     Clust1.AddFrame(MyTrack1, 300 * TIMECODE_SCALE, *data4, MyNewBlock, *MyLastBlockTrk1);
@@ -272,7 +272,7 @@ int main(int argc, char **argv)
         Blob3->SetBlockGroup(*MyLastBlockTrk1);
     AllCues.AddBlockBlob(*Blob3);
     //AllCues.UpdateSize();
-
+#endif
     // simulate the writing of the stream :
     // - write an empty element with enough size for the cue entry
     // - write the cluster(s)
@@ -288,7 +288,11 @@ int main(int argc, char **argv)
     Clust2.EnableChecksum();
 
     DataBuffer *data2 = new DataBuffer((binary *)"tttyyy", countof("tttyyy"));
+#if 0 // bogus ownership
     Clust2.AddFrame(MyTrack1, 350 * TIMECODE_SCALE, *data2, MyNewBlock, *MyLastBlockTrk1);
+#else
+    Clust2.AddFrame(MyTrack1, 350 * TIMECODE_SCALE, *data2, MyNewBlock);
+#endif
 
         KaxBlockBlob *Blob4 = new KaxBlockBlob(BLOCK_BLOB_NO_SIMPLE);
         Blob4->SetBlockGroup(*MyNewBlock);
@@ -381,10 +385,12 @@ int main(int argc, char **argv)
 #endif // OLD
     out_file.close();
 
+#if 0 // bogus ownership
         delete Blob1;
         delete Blob2;
         delete Blob3;
         delete Blob4;
+#endif
     }
     catch (exception & Ex)
     {
